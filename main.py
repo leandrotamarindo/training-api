@@ -1,4 +1,5 @@
 import requests
+import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import date, timedelta
 
@@ -14,7 +15,16 @@ params = {
 }
 
 awnser = requests.get(url, params=params)
-data = awnser.json()  # agora é uma LISTA, não um dicionário
+data = awnser.json()  
 
-df = pd.DataFrame(data)  # dados vindos da API
+df = pd.DataFrame(data)  
 df["date"] = pd.to_datetime(df["date"])
+
+plt.plot(df["date"], df["rate"], marker="o", color="red")
+plt.title("Dolar price (USD/BRL) - Last 30 days")
+plt.xlabel("Date")
+plt.ylabel("Price (R$)")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig("Dolar-price.png")
+plt.show()
